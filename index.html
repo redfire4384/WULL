@@ -2,203 +2,203 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building & Bathroom Locator</title>
-    <style>
-        .floor-switcher button {
-            background-color: #007BFF;  /* A nice shade of blue */
-            color: white;               /* White text */
-            border: none;               /* No border */
-            border-radius: 5px;         /* Rounded corners */
-            margin: 2px;                /* Space between buttons */
-            cursor: pointer;            /* Change cursor to hand icon on hover */
-            transition: background-color 0.3s;  /* Smooth color transition */
-            padding: 5px 10px;          /* Some padding for better appearance */
-            outline: none;              /* Remove the default outline */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building & Bathroom Locator</title>
+<style>
+    .floor-switcher button {
+        background-color: #007BFF;  /* A nice shade of blue */
+        color: white;               /* White text */
+        border: none;               /* No border */
+        border-radius: 5px;         /* Rounded corners */
+        margin: 2px;                /* Space between buttons */
+        cursor: pointer;            /* Change cursor to hand icon on hover */
+        transition: background-color 0.3s;  /* Smooth color transition */
+        padding: 5px 10px;          /* Some padding for better appearance */
+        outline: none;              /* Remove the default outline */
+    }
 
-        .controls {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for a lift effect */
-        }
+    .controls {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for a lift effect */
+    }
 
-        .building {
-            width: 100px;
-            height: 200px;
-            background-color: grey;
-            margin: 20px;
-            display: inline-block;
-            position: relative;
-            border: 5px solid transparent;
-            transition: transform 0.3s, border 0.3s, width 0.3s, height 0.3s;
-        }
+    .building {
+        width: 100px;
+        height: 200px;
+        background-color: grey;
+        margin: 20px;
+        display: inline-block;
+        position: relative;
+        border: 5px solid transparent;
+        transition: transform 0.3s, border 0.3s, width 0.3s, height 0.3s;
+    }
 
-        .bathroom {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: blue;
-            position: absolute;
-            visibility: hidden;
-            transition: visibility 0.3s;
-        }
+    .bathroom {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: blue;
+        position: absolute;
+        visibility: hidden;
+        transition: visibility 0.3s;
+    }
 
-        .building:hover {
-            transform: scale(1.1);
-            border-color: black;
-        }
+    .building:hover {
+        transform: scale(1.1);
+        border-color: black;
+    }
 
-        .expanded {
-            width: 200px;
-            height: 400px;
-        }
+    .expanded {
+        width: 200px;
+        height: 400px;
+    }
 
-        .expanded .bathroom {
-            visibility: visible;
-        }
+    .expanded .bathroom {
+        visibility: visible;
+    }
 
-        .floor-switcher {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            background-color: white;
-            border: 1px solid black;
-        }
+    .floor-switcher {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        background-color: white;
+        border: 1px solid black;
+    }
 
-        .floor-switcher button:hover {
-            background-color: #0056b3;  /* A darker shade of blue for hover effect */
-        }
+    .floor-switcher button:hover {
+        background-color: #0056b3;  /* A darker shade of blue for hover effect */
+    }
 
-        .floor-switcher button:active {
-            background-color: #004080;  /* Even darker shade for active (clicked) state */
-            transform: scale(0.95);     /* Slightly scale down the button when clicked */
-        }
+    .floor-switcher button:active {
+        background-color: #004080;  /* Even darker shade for active (clicked) state */
+        transform: scale(0.95);     /* Slightly scale down the button when clicked */
+    }
 
-        .floor {
-            display: none;
-        }
+    .floor {
+        display: none;
+    }
 
-        .floor.active {
-            display: block;
-        }
-    </style>
+    .floor.active {
+        display: block;
+    }
+</style>
 </head>
 
 <body>
 
 <div class="controls">
-    <label><input type="checkbox" value="male" checked> Male</label>
-    <label><input type="checkbox" value="female" checked> Female</label>
-    <label><input type="checkbox" value="all-gender" checked> All Gender</label>
-    <label><input type="checkbox" value="wheelchair" checked> Wheelchair Accessible</label>
+<label><input type="checkbox" value="male" checked> Male</label>
+<label><input type="checkbox" value="female" checked> Female</label>
+<label><input type="checkbox" value="all-gender" checked> All Gender</label>
+<label><input type="checkbox" value="wheelchair" checked> Wheelchair Accessible</label>
 </div>
 
-    <script>
-        function toggleBuilding(element) {
-            if (element.classList.contains('expanded')) {
-                element.classList.remove('expanded');
-            } else {
-                // Collapse all buildings
-                let buildings = document.querySelectorAll('.building');
-                buildings.forEach(building => {
-                    building.classList.remove('expanded');
-                });
-                // Expand clicked building
-                element.classList.add('expanded');
-            }
-        }
-
-        function switchFloor(event, buttonElement, floorNumber) {
-            event.stopPropagation();  // Prevent the building from collapsing when clicking the button
-
-            // Get the parent building
-            const building = buttonElement.closest('.building');
-
-            // Hide all floors
-            const floors = building.querySelectorAll('.floor');
-            floors.forEach(floor => {
-                floor.classList.remove('active');
+<script>
+    function toggleBuilding(element) {
+        if (element.classList.contains('expanded')) {
+            element.classList.remove('expanded');
+        } else {
+            // Collapse all buildings
+            let buildings = document.querySelectorAll('.building');
+            buildings.forEach(building => {
+                building.classList.remove('expanded');
             });
-
-            // Show the selected floor
-            const targetFloor = floors[floorNumber - 1];
-            targetFloor.classList.add('active');
+            // Expand clicked building
+            element.classList.add('expanded');
         }
+    }
 
-        document.querySelector('.controls').addEventListener('change', function() {
-            updateBathroomsVisibility();
+    function switchFloor(event, buttonElement, floorNumber) {
+        event.stopPropagation();  // Prevent the building from collapsing when clicking the button
+
+        // Get the parent building
+        const building = buttonElement.closest('.building');
+
+        // Hide all floors
+        const floors = building.querySelectorAll('.floor');
+        floors.forEach(floor => {
+            floor.classList.remove('active');
         });
 
-function updateBathroomsVisibility() {
-    const maleVisible = document.querySelector('input[value="male"]').checked;
-    const femaleVisible = document.querySelector('input[value="female"]').checked;
-    const allGenderVisible = document.querySelector('input[value="all-gender"]').checked;
-    const wheelchairVisible = document.querySelector('input[value="wheelchair"]').checked;
+        // Show the selected floor
+        const targetFloor = floors[floorNumber - 1];
+        targetFloor.classList.add('active');
+    }
 
-    const bathrooms = document.querySelectorAll('.bathroom');
-    bathrooms.forEach(bathroom => {
-        const isMale = bathroom.getAttribute('data-type') === 'male';
-        const isFemale = bathroom.getAttribute('data-type') === 'female';
-        const isAllGender = bathroom.getAttribute('data-type') === 'all-gender';
-        const isWheelchair = bathroom.getAttribute('data-wheelchair') === 'true';
-
-        const buildingIsExpanded = bathroom.closest('.building').classList.contains('expanded');
-
-        let shouldBeVisible = 
-            buildingIsExpanded &&
-            (
-                (isMale && maleVisible) ||
-                (isFemale && femaleVisible) ||
-                (isAllGender && allGenderVisible)
-            );
-
-        if (wheelchairVisible) {
-            shouldBeVisible = shouldBeVisible && isWheelchair;
-        }
-
-        bathroom.style.visibility = shouldBeVisible ? 'visible' : 'hidden';
+    document.querySelector('.controls').addEventListener('change', function() {
+        updateBathroomsVisibility();
     });
+
+function updateBathroomsVisibility() {
+const maleVisible = document.querySelector('input[value="male"]').checked;
+const femaleVisible = document.querySelector('input[value="female"]').checked;
+const allGenderVisible = document.querySelector('input[value="all-gender"]').checked;
+const wheelchairVisible = document.querySelector('input[value="wheelchair"]').checked;
+
+const bathrooms = document.querySelectorAll('.bathroom');
+bathrooms.forEach(bathroom => {
+    const isMale = bathroom.getAttribute('data-type') === 'male';
+    const isFemale = bathroom.getAttribute('data-type') === 'female';
+    const isAllGender = bathroom.getAttribute('data-type') === 'all-gender';
+    const isWheelchair = bathroom.getAttribute('data-wheelchair') === 'true';
+
+    const buildingIsExpanded = bathroom.closest('.building').classList.contains('expanded');
+
+    let shouldBeVisible = 
+        buildingIsExpanded &&
+        (
+            (isMale && maleVisible) ||
+            (isFemale && femaleVisible) ||
+            (isAllGender && allGenderVisible)
+        );
+
+    if (wheelchairVisible) {
+        shouldBeVisible = shouldBeVisible && isWheelchair;
+    }
+
+    bathroom.style.visibility = shouldBeVisible ? 'visible' : 'hidden';
+});
 }
 </script>
 
 <div class="building" onclick="toggleBuilding(this)">
-    <div class="floor-switcher">
-        <button onclick="switchFloor(event, this, 1)">1</button>
-        <button onclick="switchFloor(event, this, 2)">2</button>
-    </div>
-    <div class="floor active">
-        <!-- Floor 1 bathrooms -->
-        <div class="bathroom" data-type="male" data-wheelchair="true" style="top:50px; left:50px;"></div>
-        <div class="bathroom" data-type="female" data-wheelchair="false" style="bottom:50px; left:50px;"></div>
-    </div>
-    <div class="floor">
-        <!-- Floor 2 bathrooms -->
-        <div class="bathroom" data-type="all-gender" data-wheelchair="true" style="top:30px; left:30px;"></div>
-        <div class="bathroom" data-type="male" data-wheelchair="false" style="bottom:70px; right:30px;"></div>
-    </div>
+<div class="floor-switcher">
+    <button onclick="switchFloor(event, this, 1)">1</button>
+    <button onclick="switchFloor(event, this, 2)">2</button>
+</div>
+<div class="floor active">
+    <!-- Floor 1 bathrooms -->
+    <div class="bathroom" data-type="male" data-wheelchair="true" style="top:50px; left:50px;"></div>
+    <div class="bathroom" data-type="female" data-wheelchair="false" style="bottom:50px; left:50px;"></div>
+</div>
+<div class="floor">
+    <!-- Floor 2 bathrooms -->
+    <div class="bathroom" data-type="all-gender" data-wheelchair="true" style="top:30px; left:30px;"></div>
+    <div class="bathroom" data-type="male" data-wheelchair="false" style="bottom:70px; right:30px;"></div>
+</div>
 </div>
 
 <div class="building" onclick="toggleBuilding(this)">
-    <div class="floor-switcher">
-        <button onclick="switchFloor(event, this, 1)">1</button>
-        <button onclick="switchFloor(event, this, 2)">2</button>
-    </div>
-    <div class="floor active">
-        <!-- Floor 1 bathrooms -->
-        <div class="bathroom" data-type="female" data-wheelchair="true" style="top:70px; right:30px;"></div>
-        <div class="bathroom" data-type="all-gender" data-wheelchair="false" style="bottom:40px; right:30px;"></div>
-    </div>
-    <div class="floor">
-        <!-- Floor 2 bathrooms -->
-        <div class="bathroom" data-type="male" data-wheelchair="true" style="top:30px; right:50px;"></div>
-        <div class="bathroom" data-type="female" data-wheelchair="false" style="bottom:70px; left:40px;"></div>
-    </div>
+<div class="floor-switcher">
+    <button onclick="switchFloor(event, this, 1)">1</button>
+    <button onclick="switchFloor(event, this, 2)">2</button>
+</div>
+<div class="floor active">
+    <!-- Floor 1 bathrooms -->
+    <div class="bathroom" data-type="female" data-wheelchair="true" style="top:70px; right:30px;"></div>
+    <div class="bathroom" data-type="all-gender" data-wheelchair="false" style="bottom:40px; right:30px;"></div>
+</div>
+<div class="floor">
+    <!-- Floor 2 bathrooms -->
+    <div class="bathroom" data-type="male" data-wheelchair="true" style="top:30px; right:50px;"></div>
+    <div class="bathroom" data-type="female" data-wheelchair="false" style="bottom:70px; left:40px;"></div>
+</div>
 </div>
 
 </body>
